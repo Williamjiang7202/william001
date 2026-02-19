@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五行智养 · 个性化健康食谱</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#F5F7FA;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    padding:20px;
+    max-width:480px;
+    margin:0 auto;
+    color:#222;
+  }
+  .card{
+    background:#fff;
+    border-radius:24px;
+    padding:26px;
+    margin-bottom:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.04);
+  }
+  .title{
+    font-size:26px;
+    font-weight:700;
+    color:#D92121;
+    text-align:center;
+    margin-bottom:4px;
+  }
+  .subtitle{
+    text-align:center;
+    color:#8A8A8E;
+    font-size:14px;
+    margin-bottom:24px;
+  }
+  .section{
+    margin-bottom:24px;
+  }
+  .sec-title{
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+  }
+  .sec-title::before{
+    content:'';
+    width:4px;
+    height:18px;
+    background:#D92121;
+    border-radius:2px;
+    margin-right:10px;
+  }
+  .label{
+    font-size:14px;
+    color:#555;
+    margin-bottom:8px;
+    display:block;
+  }
+  .row{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .col{
+    flex:1;
+  }
+  select{
+    width:100%;
+    padding:14px 12px;
+    border-radius:14px;
+    border:1px solid #EAEAEC;
+    background:#FAFAFA;
+    font-size:15px;
+    outline:none;
+    line-height:1.2;
+    min-height:48px;
+  }
+  textarea{
+    width:100%;
+    padding:14px;
+    border-radius:14px;
+    border:1px solid #EAEAEC;
+    background:#FAFAFA;
+    font-size:15px;
+    min-height:80px;
+  }
+  .slider-box{
+    margin-bottom:20px;
+    padding:16px;
+    background:#FAFAFA;
+    border-radius:14px;
+  }
+  .slider-header{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    margin-bottom:8px;
+  }
+  .slider-value{
+    font-weight:600;
+  }
+  .normal{color:#00B42A;}
+  .high{color:#FF7D00;}
+  .danger{color:#D92121;}
+  .slider{
+    width:100%;
+    height:6px;
+    background:linear-gradient(to right, #00B42A 60%, #FF7D00 80%, #D92121 100%);
+    border-radius:3px;
+    appearance:none;
+  }
+  .slider::-webkit-slider-thumb{
+    appearance:none;
+    width:18px;
+    height:18px;
+    background:#fff;
+    border:2px solid #D92121;
+    border-radius:50%;
+  }
+  .tag-group{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    margin-top:6px;
+  }
+  .tag{
+    padding:3px 8px;
+    border-radius:6px;
+    font-size:12px;
+  }
+  .tag.normal{background:#E8FFEE;}
+  .tag.high{background:#FFF4E8;}
+  .tag.danger{background:#FDECEC;}
+
+  .btn{
+    width:100%;
+    padding:18px;
+    background:linear-gradient(90deg,#D92121,#FF4747);
+    color:#fff;
+    border:none;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:600;
+    margin-top:10px;
+  }
+  .btn:disabled{
+    background:#EAEAEC;
+    color:#B0B0B;
+  }
+  .share-btn{
+    background:linear-gradient(90deg,#12B7F5,#0088CC);
+    margin-top:10px;
+  }
+
+  .result-card{
+    background:#F8F9FC;
+    border-radius:16px;
+    padding:20px;
+    font-size:15px;
+    line-height:1.7;
+    margin-bottom:16px;
+  }
+  .recipe-day{
+    background:#F8F9FC;
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:12px;
+  }
+  .recipe-day h4{
+    color:#D92121;
+    font-size:16px;
+    margin-bottom:10px;
+  }
+  .recipe-meal{
+    font-size:14px;
+    margin-bottom:6px;
+    color:#333;
+  }
+  .tip{
+    font-size:12px;
+    color:#8A8A8E;
+    line-height:1.5;
+  }
+  .empty-tip{
+    text-align:center;
+    color:#8A8A8E;
+    padding:20px 0;
+  }
+
+  .pay-section{
+    display:none;
+    margin-top:15px;
+  }
+  .pay-card{
+    background:#FFF8E8;
+    border:1px solid #FFB000;
+    border-radius:16px;
+    padding:20px;
+    text-align:center;
+  }
+  .pay-card h3{
+    color:#FF6000;
+    margin-bottom:10px;
+  }
+  .pay-card .price{
+    font-size:22px;
+    color:#D92121;
+    font-weight:bold;
+    margin:10px 0;
+  }
+  .pay-card img{
+    width:180px;
+    margin:10px auto;
+    border-radius:8px;
+    border:2px solid #fff;
+  }
+  .pay-card .desc{
+    font-size:13px;
+    color:#666;
+    margin-top:8px;
+  }
+  .pay-success{
+    color:#00B42A;
+    font-weight:bold;
+    display:none;
+    margin-top:15px;
+    text-align:center;
+  }
+
+  .admin-config{
+    display:none;
+    background:#f5f5f5;
+    padding:15px;
+    border-radius:12px;
+    margin-top:10px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="title">五行智养</div>
+  <div class="subtitle">国学五行体质 · 三高精准调理 · 专属智能食谱</div>
+
+  <div class="section">
+    <div class="sec-title">① 出生信息（五行测算·必填）</div>
+    <div class="row">
+      <div class="col">
+        <div class="label">出生年</div>
+        <select id="birthYear"></select>
+      </div>
+      <div class="col">
+        <div class="label">出生月</div>
+        <select id="birthMonth"></select>
+      </div>
+      <div class="col">
+        <div class="label">出生日</div>
+        <select id="birthDay"></select>
+      </div>
+    </div>
+
+    <div class="label">是否知道出生时辰</div>
+    <select id="hasShiChen">
+      <option value="no">不知道（默认测算）</option>
+      <option value="yes">知道（精准测算）</option>
+    </select>
+
+    <select id="birthShiChen" style="display:none;margin-top:10px">
+      <option value="6">午时 11:00-13:00</option>
+      <option value="0">子时 23-1</option><option value="1">丑时 1-3</option><option value="2">寅时 3-5</option>
+      <option value="3">卯时 5-7</option><option value="4">辰时 7-9</option><option value="5">巳时 9-11</option>
+      <option value="7">未时 13-15</option><option value="8">申时 15-17</option><option value="9">酉时 17-19</option>
+    </select>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">② 三高健康状况</div>
+    <div class="slider-box">
+      <div class="slider-header"><span>收缩压（高压）</span><span class="slider-value" id="bpValue">130 <span id="bpStatus" class="normal">正常</span></span></div>
+      <input type="range" class="slider" id="bpSlider" min="90" max="180" value="130">
+      <div class="tag-group"><span class="tag normal">正常：90-139</span><span class="tag high">偏高：140-159</span><span class="tag danger">异常：≥160</span></div>
+    </div>
+    <div class="slider-box">
+      <div class="slider-header"><span>空腹血糖</span><span class="slider-value" id="bgValue">5.5 <span id="bgStatus" class="normal">正常</span> mmol/L</span></div>
+      <input type="range" class="slider" id="bgSlider" min="30" max="150" value="55">
+      <div class="tag-group"><span class="tag normal">正常：3.9-6.1</span><span class="tag high">偏高：6.1-7.0</span><span class="tag danger">异常：≥7.0</span></div>
+    </div>
+    <div class="slider-box">
+      <div class="slider-header"><span>总胆固醇</span><span class="slider-value" id="blValue">4.5 <span id="blStatus" class="normal">正常</span> mmol/L</span></div>
+      <input type="range" class="slider" id="blSlider" min="10" max="70" value="45">
+      <div class="tag-group"><span class="tag normal">正常：＜5.2</span><span class="tag high">偏高：5.2-6.1</span><span class="tag danger">异常：≥6.1</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-title">③ 其他身体情况</div>
+    <textarea id="extraIssues" placeholder="睡眠差、囊肿、肥胖、干眼症、脂肪肝、便秘..."></textarea>
+  </div>
+
+  <button class="btn" id="generateBtn" disabled onclick="generateAll()">生成五行分析 + 专属调理食谱</button>
+  <button class="btn share-btn" onclick="doShare()">🔗 一键分享给朋友</button>
+</div>
+
+<div class="card">
+  <div class="sec-title">五行体质精准分析（免费查看）</div>
+  <div class="result-card" id="wuxingResult">
+    <div class="empty-tip">请填写出生信息后生成</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sec-title">一周五行调理专属食谱</div>
+  <div id="recipeResult">
+    <div class="empty-tip">请先完成五行测算</div>
+  </div>
+
+  <div class="pay-section" id="paySection">
+    <div class="pay-card">
+      <h3>🔓 付费解锁完整食谱</h3>
+      <div class="price" id="showPrice">19.9 元</div>
+      <img id="qrcode" src="【替换成你的收款码图片地址】" alt="微信收款码">
+      <div class="desc">扫码支付后，食谱<strong>自动解锁</strong></div>
+    </div>
+    <div class="pay-success" id="paySuccess">✅ 支付成功！食谱已自动解锁</div>
+  </div>
+</div>
+
+<script>
+  // ==============================================
+  // ✅ 后台配置区（只有你能改，用户看不见）
+  // ==============================================
+  const ADMIN_CONFIG = {
+    price: 19.9,          // 这里改价格：1.9 / 5.9 / 9.9 / 19.9 随便写
+    payMarkKey: "PAY_SUCCESS",
+    qrcodeUrl: "【替换成你的收款码图片地址】"
+  };
+
+  // ==============================================
+  // ✅ 一键分享功能
+  // ==============================================
+  function doShare(){
+    const shareUrl = window.location.href;
+    if (navigator.share) {
+      navigator.share({
+        title: '五行智养·个性化健康食谱',
+        text: '根据你的五行体质+三高情况，生成专属一周养生食谱',
+        url: shareUrl
+      }).catch(err => {});
+    } else {
+      alert("分享链接：\n" + shareUrl);
+    }
+  }
+
+  // ==============================================
+  // 下面是系统逻辑，你不用动
+  // ==============================================
+  const Y = document.getElementById('birthYear');
+  const M = document.getElementById('birthMonth');
+  const D = document.getElementById('birthDay');
+  const Btn = document.getElementById('generateBtn');
+
+  // 初始化年月日
+  for(let y=1940;y<=2010;y++){
+    const o=document.createElement('option');o.value=y;o.textContent=y+'年';Y.appendChild(o);
+  }
+  for(let m=1;m<=12;m++){
+    const o=document.createElement('option');o.value=m;o.textContent=m+'月';M.appendChild(o);
+  }
+  function updateDays(){
+    D.innerHTML='<option value="">请选择</option>';let max=31;const mv=+M.value;
+    if([4,6,9,11].includes(mv))max=30;if(mv===2)max=28;
+    for(let d=1;d<=max;d++){
+      const o=document.createElement('option');o.value=d;o.textContent=d+'日';D.appendChild(o);
+    }
+  }
+  function checkEnable(){ Btn.disabled = !(Y.value&&M.value&&D.value); }
+  Y.onchange=()=>{updateDays();checkEnable();}
+  M.onchange=()=>{updateDays();checkEnable();}
+  D.onchange=checkEnable;
+
+  // 时辰
+  document.getElementById('hasShiChen').onchange=function(){
+    document.getElementById('birthShiChen').style.display = this.value=='yes'?'block':'none';
+  }
+
+  // 三高滑块
+  const bp=document.getElementById('bpSlider'),bg=document.getElementById('bgSlider'),bl=document.getElementById('blSlider');
+  bp.oninput=function(){
+    const v=+this.value;let cls='normal',txt='正常';
+    if(v>=140&&v<160){cls='high';txt='偏高';}if(v>=160){cls='danger';txt='异常';}
+    document.getElementById('bpValue').innerHTML = v+' <span id="bpStatus" class="'+cls+'">'+txt+'</span>';
+  }
+  bg.oninput=function(){
+    const v=(this.value/10).toFixed(1);let cls='normal',txt='正常';
+    if(v>=6.1&&v<7.0){cls='high';txt='偏高';}if(v>=7.0){cls='danger';txt='异常';}
+    document.getElementById('bgValue').innerHTML = v+' <span id="bgStatus" class="'+cls+'">'+txt+'</span> mmol/L';
+  }
+  bl.oninput=function(){
+    const v=(this.value/10).toFixed(1);let cls='normal',txt='正常';
+    if(v>=5.2&&v<6.1){cls='high';txt='偏高';}if(v>=6.1){cls='danger';txt='异常';}
+    document.getElementById('blValue').innerHTML = v+' <span id="blStatus" class="'+cls+'">'+txt+'</span> mmol/L';
+  }
+
+  // 显示价格
+  document.getElementById('showPrice').innerText = ADMIN_CONFIG.price + ' 元';
+  document.getElementById('qrcode').src = ADMIN_CONFIG.qrcodeUrl;
+
+  // 生成分析
+  function generateAll(){
+    const year=+Y.value,month=+M.value,day=+D.value;
+    const extra=document.getElementById('extraIssues').value||'无特殊情况';
+    document.getElementById('wuxingResult').innerHTML = `
+<strong>✅ 五行体质分析（免费）</strong><br>
+出生：${year}年${month}月${day}日<br>
+三高：血压${bp.value} · 血糖${(bg.value/10).toFixed(1)} · 血脂${(bl.value/10).toFixed(1)}<br>
+身体情况：${extra}<br><br>
+<strong>完整一周食谱需支付 ${ADMIN_CONFIG.price} 元解锁</strong>
+    `;
+    document.getElementById('paySection').style.display='block';
+    document.getElementById('recipeResult').innerHTML='<div class="empty-tip">食谱已加密，请支付解锁</div>';
+    if(localStorage.getItem(ADMIN_CONFIG.payMarkKey)) unlockRecipe();
+    else startAutoCheck();
+  }
+
+  // 自动检测解锁
+  let checkTimer;
+  function startAutoCheck(){
+    clearInterval(checkTimer);
+    checkTimer = setInterval(()=>{
+      if(localStorage.getItem(ADMIN_CONFIG.payMarkKey)){
+        clearInterval(checkTimer);
+        unlockRecipe();
+      }
+    }, 1000);
+  }
+
+  // 解锁食谱
+  function unlockRecipe(){
+    document.getElementById('paySection').style.display='none';
+    document.getElementById('paySuccess').style.display='block';
+    document.getElementById('recipeResult').innerHTML = `
+<div class="recipe-day">
+<h4>周一｜补五行·控三高</h4>
+<div class="recipe-meal">早：小米百合粥 + 鸡蛋</div>
+<div class="recipe-meal">午：杂粮饭 + 清蒸鱼 + 西兰花</div>
+<div class="recipe-meal">晚：山药粥 + 豆腐 + 青菜</div>
+</div>
+<div class="recipe-day">
+<h4>周二｜清脂降压</h4>
+<div class="recipe-meal">早：燕麦粥 + 鸡蛋</div>
+<div class="recipe-meal">午：荞麦饭 + 鸡胸肉 + 芹菜</div>
+<div class="recipe-meal">晚：冬瓜海带汤 + 菌菇</div>
+</div>
+<div class="recipe-day">
+<h4>周三｜健脾助眠</h4>
+<div class="recipe-meal">早：南瓜粥 + 鸡蛋</div>
+<div class="recipe-meal">午：糙米饭 + 瘦肉 + 菠菜</div>
+<div class="recipe-meal">晚：银耳百合汤 + 豆腐</div>
+</div>
+<div class="recipe-day">
+<h4>周四｜五行固本</h4>
+<div class="recipe-meal">早：红豆薏米粥 + 鸡蛋</div>
+<div class="recipe-meal">午：杂粮饭 + 鱼 + 油麦菜</div>
+<div class="recipe-meal">晚：莲子粥 + 绿叶菜</div>
+</div>
+<div class="recipe-day">
+<h4>周五｜稳糖稳脂</h4>
+<div class="recipe-meal">早：荞麦馒头 + 豆浆</div>
+<div class="recipe-meal">午：米饭 + 牛肉 + 西兰花</div>
+<div class="recipe-meal">晚：蔬菜汤 + 山药</div>
+</div>
+<div class="recipe-day">
+<h4>周六｜清肠散结</h4>
+<div class="recipe-meal">早：蔬菜粥 + 鸡蛋</div>
+<div class="recipe-meal">午：藜麦饭 + 清蒸鱼</div>
+<div class="recipe-meal">晚：冬瓜海带汤 + 菌菇</div>
+</div>
+<div class="recipe-day">
+<h4>周日｜养元固本</h4>
+<div class="recipe-meal">早：小米粥 + 鸡蛋</div>
+<div class="recipe-meal">午：杂粮饭 + 鸡肉 + 青菜</div>
+<div class="recipe-meal">晚：五行养生汤 + 山药</div>
+</div>
+<div class="tip" style="margin-top:12px">本食谱为养生调理参考，不替代药物治疗</div>
+    `;
+  }
+
+  // 管理员手动解锁
+  window.unlockByAdmin = function(){
+    localStorage.setItem(ADMIN_CONFIG.payMarkKey, '1');
+    unlockRecipe();
+  }
+</script>
+</body>
+</html>
